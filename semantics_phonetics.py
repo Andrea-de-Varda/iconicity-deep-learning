@@ -199,7 +199,7 @@ def network_multilingual(language):
     model.add(keras.layers.Dense(100, activation=keras.layers.LeakyReLU(alpha=0.05)))
     model.compile(loss='cosine_similarity', optimizer='adam', metrics=[tf.keras.metrics.CosineSimilarity(axis=1)])
     model.summary()
-    model.fit(input_train, target_train, epochs=1, validation_data=(input_test, target_test))
+    model.fit(input_train, target_train, epochs=1, validation_data=(input_test, target_test), shuffle=True)
     model.save("model_testing_"+language+".h5")
     results = model.evaluate(input_test, target_test); print("RESULTS (multilingual) =", results)
     prediction = model.predict(input_test)
@@ -227,7 +227,7 @@ def network_random(language):
     s_model.add(keras.layers.Dense(100, activation=keras.layers.LeakyReLU(alpha=0.05)))
     s_model.compile(loss='cosine_similarity', optimizer='adam', metrics=[tf.keras.metrics.CosineSimilarity(axis=1)])
     s_model.summary()
-    s_model.fit(input_train, target_train, epochs=1, validation_data=(input_test, target_test))
+    s_model.fit(input_train, target_train, epochs=1, validation_data=(input_test, target_test), shuffle=True)
     s_model.save("s_model_testing_"+language+".h5")
     s_results = s_model.evaluate(input_test, target_test); print("RESULTS (random) =", s_results)
     s_prediction = s_model.predict(input_test)
@@ -262,10 +262,10 @@ for l in ["vietnamese", "hungarian", "indonesian", "arabic", "turkish", "english
     print("\nT-test results", ttest(pd.Series(cos), pd.Series(cos_r), group1_name= None, group2_name= None, equal_variances= True, paired= True, correction= None))
 print(pd.DataFrame(res, columns = ["language", "loss", "cosine", "loss_random", "cosine_random"]))
     
-with open('out_resdict_sem', 'wb') as f:
-    pickle.dump(out_resdict, f)
-with open('out_resdict_sem', 'rb') as handle:
-    out_resdict = pickle.load(handle)
+#with open('out_resdict_sem', 'wb') as f:
+#    pickle.dump(out_resdict, f)
+#with open('out_resdict_sem', 'rb') as handle:
+#    out_resdict = pickle.load(handle)
 
 for l in ["vietnamese", "hungarian", "indonesian", "arabic", "turkish", "english"]:
     rand = out_resdict[l+"_random"]
